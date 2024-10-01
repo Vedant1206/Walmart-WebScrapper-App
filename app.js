@@ -8,6 +8,9 @@ const mongoose = require('mongoose'); // Import mongoose to connect to MongoDB
 const flash = require('connect-flash') // Import connect-flash for flash messages (temporary messages)
 const session = require('express-session') // Import express-session for handling user sessions
 
+const userRoutes = require('./routes/users'); //require user routes
+
+
 // Load environment variables from the config.env file (for things like database passwords)
 dotenv.config({path :'./config.env'});
 
@@ -15,7 +18,7 @@ dotenv.config({path :'./config.env'});
 mongoose.connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true, // Use new URL string parser to avoid deprecation warning
     useUnifiedTopology: true, // Use the new server discovery engine
-    useCreateIndex: true // Ensure indexes are created properly in MongoDB
+    //useCreateIndex: true // Ensure indexes are created properly in MongoDB
 });
 
 // Middleware for managing sessions (keeps track of user data between requests)
@@ -37,6 +40,8 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({extended:true}));
 app.set('views', path.join(__dirname, 'views')); // Set the directory for view templates
 app.set('view engine', 'ejs'); // Set EJS as the template engine
+
+app.use(userRoutes);
 
 // Start the server and listen on the port specified in environment variables
 app.listen(process.env.PORT, ()=>{

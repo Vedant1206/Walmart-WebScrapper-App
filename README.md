@@ -1,7 +1,5 @@
 # Walmart-WebScrapper-
 
-
-
 for authentication: https://www.passportjs.org/
 
 Initialized using npm init -y
