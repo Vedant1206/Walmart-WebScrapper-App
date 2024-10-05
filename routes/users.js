@@ -13,11 +13,35 @@ router.get('/signup', (req, res) =>{
 })
 
 
-router.get('/dashboard', (req, res) =>{
-    res.render('dashboard')
-})
+// Dashboard route
+router.get('/dashboard', isAuthenticatedUser, (req, res) => {
+    res.render('dashboard', { user: req.user }); // Pass user data to the view if needed
+});
+
+// Middleware to check if the user is authenticated
+function isAuthenticatedUser(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    req.flash('error_msg', 'Please login first to access this page');
+    res.redirect('/login');
+}
 
 //Post routes
+router.post('/login', passport.authenticate('local', {
+    successRedirect : '/dashboard',
+    failureRedirect : '/login',
+    failureFlash : 'Invalid email or password. Try again'
+}));
+
+router.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err) { return next(err); }
+        req.flash('success_msg', 'You have been logged out.');
+        res.redirect('/login');
+    });
+});
+
 router.post('/signup', (req, res) => {
     let { name, email, password } = req.body;
     let userData = { 
@@ -36,5 +60,7 @@ router.post('/signup', (req, res) => {
         });
     });
 });
+
+
 
 module.exports = router;
