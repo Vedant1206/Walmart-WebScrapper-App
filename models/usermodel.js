@@ -17,7 +17,9 @@ let userSchema = new mongoose.Schema({
         //dont want to show this password
         // ensures the password isn't retrieved when fetching a user unless explicitly requested
         select: false 
-    } 
+    },
+    resetPasswordToken: String, 
+    resetPasswordExpires: Date
 })
 
 // handling of authentication logic

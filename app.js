@@ -5,6 +5,10 @@ const app = express(); // Create an Express app
 const path = require('path'); // Import the path module for handling file paths
 const bodyParser = require('body-parser'); // Import body-parser to handle form data
 const dotenv = require('dotenv') // Import dotenv to load environment variables from a .env file
+
+// Load the environment variables from the .env file
+dotenv.config();
+
 const mongoose = require('mongoose'); // Import mongoose to connect to MongoDB
 const flash = require('connect-flash') // Import connect-flash for flash messages (temporary messages)
 const session = require('express-session') // Import express-session for handling user sessions
