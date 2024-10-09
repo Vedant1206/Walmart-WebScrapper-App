@@ -34,17 +34,22 @@ mongoose.connect(process.env.DATABASE_LOCAL, {
 
 // Middleware for managing sessions (keeps track of user data between requests)
 app.use(session({
-    secret : 'Just a simple login/sign up application', // Session secret key
+    secret : 'Just a simple login/sign up application', // This is a key used to encrypt session data for security
     resave: true, // Save session even if it wasn't modified
-    saveUninitialized: true // Save uninitialized session (session with no data yet)
+    saveUninitialized: true //a new session will exist for all users, whether or not they’ve interacted with the session data.
 }))
 
 
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy({usernameField: 'email'}, User.authenticate()));
+
+// how to serialize (or store) the user data (usually the user ID) into the session when they log in.
 passport.serializeUser(User.serializeUser());
+
+// This tells Passport how to deserialize (or retrieve) the user from the session. When a user makes a request, this function retrieves their full user data from the session ID, allowing the application to know who the user is.
 passport.deserializeUser(User.deserializeUser());
+
 
 // Middleware to handle flash messages (temporary messages for success or error)
 app.use(flash());
